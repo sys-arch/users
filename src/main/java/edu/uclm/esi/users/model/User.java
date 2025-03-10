@@ -1,16 +1,14 @@
 package edu.uclm.esi.users.model;
 
-
-
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
-import jakarta.persistence.Index;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -19,7 +17,7 @@ import jakarta.persistence.Index;
 		@Index(columnList = "pwd")
 	})
 
-public class Users {
+public class User {
 	
 	@Id @Column(length = 36)
 	private String id;
@@ -39,7 +37,7 @@ public class Users {
 	@Column(length = 100, nullable = false)
 	private String apellido2;
 	
-    public Users() {
+    public User() {
         this.id = UUID.randomUUID().toString();
     }
     

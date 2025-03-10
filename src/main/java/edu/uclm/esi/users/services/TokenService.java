@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.equipo3.reuneme.security.JwtTokenProvider;
+import edu.uclm.esi.users.security.JwtTokenProvider;
 
 @Service
 public class TokenService {
@@ -15,8 +15,8 @@ public class TokenService {
     private JwtTokenProvider jwtTokenProvider;
 
     // Genera un JWT usando JwtTokenProvider
-    public String generarToken(String email, String role) {
-        return jwtTokenProvider.generateToken(email, role);
+    public String generarToken(String email) {
+        return jwtTokenProvider.generateToken(email);
     }
 
     // Valida el JWT usando JwtTokenProvider

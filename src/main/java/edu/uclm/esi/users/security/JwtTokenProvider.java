@@ -1,18 +1,19 @@
 package edu.uclm.esi.users.security;
 
 
+import java.security.Key;
+import java.util.Date;
+import java.util.function.Function;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.security.Key;
-import java.util.Date;
-import java.util.function.Function;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 @Component
@@ -30,10 +31,9 @@ public class JwtTokenProvider {
     }
 
     // Generar JWT
-    public String generateToken(String username, String role) {
+    public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
-                .claim("role", role.replace("ROLE_", "")) // Añadir el rol al token
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
