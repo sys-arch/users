@@ -22,6 +22,7 @@ import edu.uclm.esi.users.services.UserService;
 
 @RestController
 @RequestMapping("/users")
+
 public class UsersController {
 
     @Autowired
