@@ -22,35 +22,35 @@ public class UserService {
 	//LOGIN 
 	/////////////////////////////////////
 	public boolean login(String email, String pwd) {
-	    // Verificar si el usuario existe
-	    User u = this.userdao.findByEmail(email);
-	    String errorMessage = "Credenciales incorrectas o desactivadas.";
-	    if (Objects.isNull(u)) {
-	        throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
-	    }
-
-	    // Verificar si la contraseña es correcta
-	    if (!u.getPwd().equals(pwd)) {
-	        throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
-	    }
-
-	    // Si todo está correcto, devolver true para permitir acceso a la pantalla de doble autenticación
-	    return true;
+		User u = this.userdao.findByEmail(email);
+		String errorMessage = "Credenciales incorrectas o desactivadas.";
+		if (Objects.isNull(u)) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
+		}
+	
+		if (!u.getPwd().equals(pwd)) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, errorMessage);
+		}
+	
+		return true;
 	}
+	
 	
 	/////////////////////////////////////
 	//Registro GENERAL - EMPLEADOS Y ADMINS
 	/////////////////////////////////////
 	public void registrar(User user) {
-	    // Comprobamos que el usuario no existe en la base de datos por email
-	    User usercheck = this.userdao.findByEmail(user.getEmail());
-	    if (usercheck != null) {
-	        throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "El usuario ya existe en la base de datos.");
-	    }
-	    
-//	    // Hashear la contraseña y guardar el nuevo usuario en la base de datos
-	    user.setPwd(org.apache.commons.codec.digest.DigestUtils.sha512Hex(user.getPwd()));
-	    this.userdao.save(user);
+		User usercheck = this.userdao.findByEmail(user.getEmail());
+		if (usercheck != null) {
+			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "El usuario ya existe en la base de datos.");
+		}
+	
+		String hashedPassword = org.apache.commons.codec.digest.DigestUtils.sha256Hex(user.getPwd());
+		System.out.println("Contraseña ingresada: " + user.getPwd());
+		System.out.println("Contraseña hasheada en registro: " + hashedPassword);
+		
+		user.setPwd(hashedPassword);
+		this.userdao.save(user);
 	}
 	
 	/////////////////////////////////////
