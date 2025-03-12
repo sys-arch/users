@@ -1,0 +1,37 @@
+package edu.uclm.esi.users.services;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import edu.uclm.esi.users.security.JwtTokenProvider;
+
+@Service
+public class TokenService {
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    // Genera un JWT usando JwtTokenProvider
+    public String generarToken(String email) {
+        return jwtTokenProvider.generateToken(email);
+    }
+
+    // Valida el JWT usando JwtTokenProvider
+    public void validarToken(String token) {
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Token no válido o ha expirado.");
+        }
+    }
+
+    // Obtiene el email del usuario desde el JWT
+    public String obtenerEmail(String token) {
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Token no válido o ha expirado.");
+        }
+        return jwtTokenProvider.getUsernameFromToken(token);
+    }
+    
+}
