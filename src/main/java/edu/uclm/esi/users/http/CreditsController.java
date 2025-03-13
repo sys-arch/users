@@ -21,20 +21,20 @@ public class CreditsController {
     @Autowired
     private CreditService service;
 
-    @GetMapping("/getcredits/{userId}")
-    public ResponseEntity<Credits> getUserCredits(@PathVariable String userId) {
-        Optional<Credits> credits = service.getUserCredits(userId);
+    @GetMapping("/getcredits/{userid}")
+    public ResponseEntity<Credits> getUserCredits(@PathVariable String userid) {
+        Optional<Credits> credits = service.getUserCredits(userid);
         return credits.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/{userId}/add")
-    public ResponseEntity<Credits> addCredits(@PathVariable String userId, @RequestParam int amount) {
-        return ResponseEntity.ok(service.addCredits(userId, amount));
+    @PostMapping("/addcredits/{userid}")
+    public ResponseEntity<Credits> addCredits(@PathVariable String userid, @RequestParam int amount) {
+        return ResponseEntity.ok(service.addCredits(userid, amount));
     }
 
-    @PostMapping("/{userId}/deduct")
-    public ResponseEntity<String> deductCredits(@PathVariable String userId, @RequestParam int amount) {
-        boolean success = service.deductCredits(userId, amount);
+    @PostMapping("/deductcredits/{userid}")
+    public ResponseEntity<String> deductCredits(@PathVariable String userid, @RequestParam int amount) {
+        boolean success = service.deductCredits(userid, amount);
         return success ? ResponseEntity.ok("Credits deducted") : ResponseEntity.badRequest().body("Insufficient credits");
     }
 }

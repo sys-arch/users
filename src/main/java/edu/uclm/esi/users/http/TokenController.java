@@ -42,6 +42,6 @@ public class TokenController {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7); // Remover el prefijo "Bearer "
         }
-        throw new IllegalArgumentException("El encabezado Authorization no contiene un token JWT válido");
+        throw new IllegalArgumentException("El encabezado Authorization no contiene un token válido");
     }
 }
