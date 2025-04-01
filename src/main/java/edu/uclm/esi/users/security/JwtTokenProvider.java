@@ -61,11 +61,6 @@ public class JwtTokenProvider {
         return username;
     }
 
-    public String getRoleFromToken(String token) {
-        String role = getClaimFromToken(token, claims -> claims.get("role", String.class));
-        logger.info("Role extracted from token: " + role);
-        return role;
-    }
     // Método genérico para obtener cualquier dato del token
     private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();

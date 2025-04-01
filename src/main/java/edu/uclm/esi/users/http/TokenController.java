@@ -21,8 +21,7 @@ public class TokenController {
     @GetMapping("/validarToken")
     public ResponseEntity<?> validarToken(@RequestHeader(name = "Authorization") String authHeader) {
         try {
-            String token = extractToken(authHeader);
-            tokenService.validarToken(token);
+            tokenService.validarToken(authHeader);
             return ResponseEntity.ok("Token válido");
         } catch (ResponseStatusException ex) {
             return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
@@ -33,15 +32,8 @@ public class TokenController {
     // Endpoint para obtener el email desde el JWT
     @GetMapping("/obtenerEmail")
     public String obtenerEmail(@RequestHeader(name = "Authorization") String authHeader) {
-        String token = extractToken(authHeader);
+        String token = tokenService.validarToken(authHeader);
         return tokenService.obtenerEmail(token);
     }
 
-    // Método privado para extraer el token desde el encabezado Authorization
-    private String extractToken(String authHeader) {
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7); // Remover el prefijo "Bearer "
-        }
-        throw new IllegalArgumentException("El encabezado Authorization no contiene un token válido");
-    }
 }
