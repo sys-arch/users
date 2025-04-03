@@ -1,14 +1,17 @@
 package edu.uclm.esi.users.http;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +21,7 @@ import edu.uclm.esi.users.model.UserRegister;
 import edu.uclm.esi.users.security.JwtTokenProvider;
 import edu.uclm.esi.users.services.EmailService;
 import edu.uclm.esi.users.services.PasswordService;
+import edu.uclm.esi.users.services.TokenService;
 import edu.uclm.esi.users.services.UserService;
 
 @RestController
@@ -33,6 +37,9 @@ public class UsersController {
 
     @Autowired
     EmailService emailservice;
+
+    @Autowired
+    TokenService tokenService;
     
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -95,6 +102,16 @@ public class UsersController {
             return ResponseEntity.status(e.getStatusCode()).body(Map.of("error", e.getReason()));
         }
     }
-
+    @GetMapping("/getuserid")
+    public UUID getUserId(@RequestHeader("Authorization") String token) {
+        
+        if (token == null || token.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token no proporcionado.");
+        }
+        
+        token = tokenService.validarToken(token);
+        // Add logic to extract and return the user ID from the token
+        return jwtTokenProvider.getUserIdFromToken(token);
+    }
 
 }

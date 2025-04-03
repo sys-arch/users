@@ -3,6 +3,7 @@ package edu.uclm.esi.users.security;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -65,5 +66,12 @@ public class JwtTokenProvider {
     private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
         return claimsResolver.apply(claims);
+    }
+
+    public UUID getUserIdFromToken(String token) {
+        String userIdString = getClaimFromToken(token, claims -> claims.get("userId", String.class));
+        UUID userId = UUID.fromString(userIdString);
+        logger.info("User ID extracted from token: " + userId);
+        return userId;
     }
 }
