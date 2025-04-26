@@ -34,7 +34,7 @@ public class PasswordResetController {
         String resetLink = appUrl + "/reset-contrasena?token=" + token;
 
         String asunto = "Recuperación de contraseña";
-        String mensaje = "<p>Hemos recibido una solicitud para restablecer tu contraseña.</p>"
+        String mensaje = "<p>Hemos recibido una solicitud para restablecer tu contraseña. En 15 minutos el link caducará.</p>"
                 + "<a href=\"" + resetLink + "\">Restablecer contraseña</a>";
 
         emailService.enviarEmail(email, asunto, mensaje);
@@ -67,7 +67,7 @@ public class PasswordResetController {
             return ResponseEntity.badRequest().body("La nueva contraseña no cumple los requisitos.");
         }
 
-        passwordResetService.resetPassword(token, newPassword);
+        passwordResetService.resetPassword(token, newPassword, confirmPassword);
         return ResponseEntity.ok("¡Contraseña restablecida con éxito!");
     }
 }

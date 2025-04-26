@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.uclm.esi.users.dao.UserDao;
 import edu.uclm.esi.users.model.PasswordResetToken;
@@ -20,7 +21,7 @@ public class PasswordResetService {
 
     @Autowired
     private UserDao userRepository;
-
+    
     public String createResetToken(String email) {
         tokenRepository.deleteByEmail(email);
 
@@ -29,27 +30,30 @@ public class PasswordResetService {
         tokenRepository.save(resetToken);
         return token;
     }
-
-    public boolean resetPassword(String token, String newPassword) {
-        Optional<PasswordResetToken> resetToken = tokenRepository.findByToken(token);
-
-        if (resetToken.isEmpty() || resetToken.get().isExpired()) {
-            throw new IllegalArgumentException("Token inválido o caducado.");
+    @Transactional
+    public void resetPassword(String token, String newPassword, String confirmPassword) {
+        if (!newPassword.equals(confirmPassword)) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden");
         }
-
-        String email = resetToken.get().getEmail();
+    
+        PasswordResetToken resetToken = tokenRepository.findByToken(token)
+                .orElseThrow(() -> new IllegalArgumentException("Token inválido o expirado"));
+    
+        String email = resetToken.getEmail();
         User user = userRepository.findByEmail(email);
-
         if (user == null) {
-            throw new IllegalArgumentException("Usuario no encontrado.");
+            throw new IllegalArgumentException("Usuario no encontrado");
         }
 
-        user.setPwd(hashPassword(newPassword));
+        String hashedPassword = DigestUtils.sha256Hex(newPassword);
+    
+        user.setPwd(hashedPassword);
         userRepository.save(user);
-        tokenRepository.deleteByToken(token);
-        return true;
+        tokenRepository.delete(resetToken);
     }
+    
 
+    
     private String hashPassword(String password) {
         return DigestUtils.sha512Hex(password);
     }
