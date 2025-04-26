@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import edu.uclm.esi.users.dao.UserDao;
 import edu.uclm.esi.users.model.PasswordResetToken;
 import edu.uclm.esi.users.model.User;
-import main.java.edu.uclm.esi.users.dao.PasswordResetTokenRepository;
+import edu.uclm.esi.users.dao.PasswordResetTokenRepository;
 
 @Service
 public class PasswordResetService {
