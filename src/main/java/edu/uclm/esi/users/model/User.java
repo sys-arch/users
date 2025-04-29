@@ -25,7 +25,7 @@ public class User {
 	@Column(length = 254, nullable = false)
 	private String email;
 	
-	@Column(length = 128, nullable = false)
+	@Column(length = 256, nullable = false)
 	private String pwd;
 	
 	@Column(length = 100, nullable = false)

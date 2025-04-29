@@ -11,7 +11,7 @@ public class Credits {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(unique = true, length = 36)
+    @Column(name = "user_id", unique = true, length = 36, nullable = false)
     private String userId;
 
     @Column
