@@ -21,7 +21,7 @@ public class EmailService {
 
     public void enviarEmail(String email, String asunto, String mensaje) {
         CreateEmailOptions params = CreateEmailOptions.builder()
-        		.from("ReuneMe <qcode@updates.swey.net>")
+        		.from("QCode <qcode@updates.swey.net>")
                 .to(email)
                 .subject(asunto)
                 .html(mensaje)
