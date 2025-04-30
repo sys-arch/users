@@ -1,4 +1,4 @@
-package edu.uclm.esi.users.controller;
+package edu.uclm.esi.users.http;
 
 import java.util.HashMap;
 import java.util.Map;
