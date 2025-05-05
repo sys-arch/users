@@ -43,6 +43,7 @@ public class JwtTokenProvider {
 
     // Validar JWT
     public boolean validateToken(String token) {
+    	logger.info("Validando token: [" + token + "]");
         try {
             Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
             logger.info("Token validated successfully.");

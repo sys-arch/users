@@ -1,4 +1,4 @@
-package edu.uclm.esi.users.service;
+package edu.uclm.esi.users.services;
 
 import java.util.Optional;
 import java.util.UUID;

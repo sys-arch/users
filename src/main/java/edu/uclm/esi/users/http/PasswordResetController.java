@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import edu.uclm.esi.users.service.PasswordResetService;
+import edu.uclm.esi.users.services.PasswordResetService;
 import edu.uclm.esi.users.services.EmailService;
 import edu.uclm.esi.users.services.PasswordService;
 
