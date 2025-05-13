@@ -8,15 +8,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.uclm.esi.users.dao.CreditsDAO;
 import edu.uclm.esi.users.model.Credits;
+import edu.uclm.esi.users.model.User;
+import edu.uclm.esi.users.dao.UserDao; 
 
 @Service
 public class CreditService {
 
     @Autowired
     private CreditsDAO cdao;
+    
+    @Autowired
+    private UserDao userDAO;
 
     public Optional<Credits> getUserCredits(String userId) {
         return cdao.findByUserId(userId);
+    }
+    
+    public User getUserId(String email) {
+    	return userDAO.findByEmail(email);
     }
 
     @Transactional

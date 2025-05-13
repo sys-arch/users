@@ -16,6 +16,10 @@ public class Credits {
 
     @Column
     private int credits;
+    
+    public Credits() {
+    	
+    }
 
     public Credits(String userId, int credits) {
         this.userId = userId;

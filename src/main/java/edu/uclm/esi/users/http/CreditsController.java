@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.uclm.esi.users.model.Credits;
+import edu.uclm.esi.users.model.User;
 import edu.uclm.esi.users.services.CreditService;
 import edu.uclm.esi.users.services.TokenService;
 
@@ -26,13 +27,31 @@ public class CreditsController {
     @Autowired
     private TokenService tokenService;
 
-    @GetMapping("/getcredits/{userid}")
-    public ResponseEntity<Credits> getUserCredits(@RequestHeader(name = "Authorization") String authHeader, @PathVariable String userid) {
-        
-        tokenService.validarToken(authHeader);
-        Optional<Credits> credits = service.getUserCredits(userid);
-        return credits.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/getcredits")
+    public ResponseEntity<Credits> getUserCredits(@RequestHeader("Authorization") String token) {
+    	System.out.println("aa");
+        try {
+            String email = token;
+            User user = service.getUserId(email);
+
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            Optional<Credits> credits = service.getUserCredits(user.getId());
+            if (credits.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            Credits c = credits.get();
+            return ResponseEntity.ok(c);
+            
+        } catch (Exception e) {
+            // En caso de error en el procesamiento
+            return ResponseEntity.status(500).body(null);
+        }
     }
+
 
     @PostMapping("/addcredits/{userid}")
     public ResponseEntity<Credits> addCredits(@RequestHeader(name = "Authorization") String authHeader, @PathVariable String userid, @RequestParam int amount) {
