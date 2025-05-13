@@ -43,11 +43,12 @@ public class Credits {
     }
 
     public boolean deductCredits(int amount) {
+    	boolean comprobar = true;
         if (credits < amount) {
-            return false;
+            comprobar = false;
         }
         credits -= amount;
-        return true;
+        return comprobar;
     }
     
 }

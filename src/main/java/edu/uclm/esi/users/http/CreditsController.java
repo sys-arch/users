@@ -60,11 +60,13 @@ public class CreditsController {
         return ResponseEntity.ok(service.addCredits(userid, amount));
     }
 
-    @PostMapping("/deductcredits/{userid}")
-    public ResponseEntity<String> deductCredits(@RequestHeader(name = "Authorization") String authHeader, @PathVariable String userid, @RequestParam int amount) {
+    @PostMapping("/deductcredits/{email}")
+    public ResponseEntity<String> deductCredits(@RequestHeader(name = "Authorization") String authHeader,
+    		@PathVariable String email, @RequestParam int amount) {
         
         tokenService.validarToken(authHeader);
-        boolean success = service.deductCredits(userid, amount);
+        User user = service.getUserId(email);
+        boolean success = service.deductCredits(user.getId(), amount);
         return success ? ResponseEntity.ok("Credits deducted") : ResponseEntity.badRequest().body("Insufficient credits");
     }
 }
