@@ -69,6 +69,12 @@ public class UsersController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El email insertado no tiene un formato válido: "
             		+ "usuario@dominio.com");
         }
+        //sanitizacion elementos si existen
+        ur.setEmail(userservice.sanitize(ur.getEmail()));
+        ur.setNombre(userservice.sanitize(ur.getNombre())); 
+        ur.setApellido1(userservice.sanitize(ur.getApellido1()));
+        ur.setApellido2(userservice.sanitize(ur.getApellido2()));
+        ur.setPwd1(userservice.sanitize(ur.getPwd1()));
 
         // Si pasa los controles, se registra en BD
         User usuario = new User();
@@ -86,7 +92,8 @@ public class UsersController {
     ////////////////////////////
     @PutMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, Object> info) {
-        String email = info.get("email").toString().toLowerCase();
+        String email = userservice.sanitize(info.get("email").toString().toLowerCase());
+
         String pwd = DigestUtils.sha256Hex(info.get("pwd").toString());
 
         try {
