@@ -57,6 +57,7 @@ public class CreditsController {
 
 
 
+<<<<<<< HEAD
     @PostMapping("/addcredits")
     public ResponseEntity<Credits> addCredits(@RequestHeader(name = "Authorization") String authHeader, @PathVariable String userid, @RequestParam int amount) {
         
@@ -67,7 +68,20 @@ public class CreditsController {
         }
 
         return ResponseEntity.ok(service.addCredits(email, amount));
+=======
+    @PostMapping("/addcreditsbyemail/{email}")
+    public ResponseEntity<Credits> addCreditsByEmail(@RequestHeader(name = "Authorization") String authHeader,
+                                                    @PathVariable String email,
+                                                    @RequestParam int amount) {
+        tokenService.validarToken(authHeader);
+        User user = service.getUserId(email);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(service.addCredits(user.getId(), amount));
+>>>>>>> 2e3d2a4 (Gracias al cielo)
     }
+
 
     @PostMapping("/deductcredits/{email}")
     public ResponseEntity<String> deductCredits(@RequestHeader(name = "Authorization") String authHeader,
