@@ -8,4 +8,4 @@ VALUES ('34f1c5b6-8f9b-4e67-8cf2-8945e8c1e4b2', 'luise.fdezmedina@gmail.com', 'f
 
 /* Créditos iniciales */
 INSERT INTO Credits (id, user_id, credits) 
-VALUES (1, 'c084162a-133f-4046-8866-fe5b8f43f6c9', 200);
+VALUES (20, 'c084162a-133f-4046-8866-fe5b8f43f6c9', 200);

@@ -9,12 +9,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.users.dao.UserDao;
 import edu.uclm.esi.users.model.User;
+import edu.uclm.esi.users.dao.CreditsDAO;
+import edu.uclm.esi.users.model.Credits;
 
 
 @Service
 public class UserService {
 	@Autowired
 	protected UserDao userdao;
+	@Autowired
+	protected CreditsDAO creditsdao;
 	@Autowired
 	protected TokenService tokenService;
 	
@@ -40,18 +44,21 @@ public class UserService {
 	//Registro GENERAL - EMPLEADOS Y ADMINS
 	/////////////////////////////////////
 	public void registrar(User user) {
-		User usercheck = this.userdao.findByEmail(user.getEmail());
-		if (usercheck != null) {
-			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "El usuario ya existe en la base de datos.");
-		}
-	
-		String hashedPassword = org.apache.commons.codec.digest.DigestUtils.sha256Hex(user.getPwd());
-		System.out.println("Contraseña ingresada: " + user.getPwd());
-		System.out.println("Contraseña hasheada en registro: " + hashedPassword);
-		
-		user.setPwd(hashedPassword);
-		this.userdao.save(user);
+	    User usercheck = this.userdao.findByEmail(user.getEmail());
+	    if (usercheck != null) {
+	        throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "El usuario ya existe en la base de datos.");
+	    }
+
+	    String hashedPassword = org.apache.commons.codec.digest.DigestUtils.sha256Hex(user.getPwd());
+	    user.setPwd(hashedPassword);
+	    this.userdao.save(user);
+
+	    if (!creditsdao.existsByUserId(user.getId())) {
+	        Credits credits = new Credits(user.getId(), 0);
+	        this.creditsdao.save(credits);
+	    }
 	}
+
 	
 	/////////////////////////////////////
 	//BUSQUEDA USUARIOS (SOLO PARA PWD RESET)
