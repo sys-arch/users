@@ -27,30 +27,32 @@ public class CreditsController {
     @Autowired
     private TokenService tokenService;
 
-    @GetMapping("/getcredits")
-    public ResponseEntity<Credits> getUserCredits(@RequestHeader("Authorization") String token) {
-    	System.out.println("aa");
+    @GetMapping("/getcredits/{email}")
+    public ResponseEntity<Credits> getUserCredits(
+            @PathVariable String email,
+            @RequestHeader("Authorization") String authHeader) {
+    	System.out.println("Holaaaa" + email);
         try {
-            String email = token;
-            User user = service.getUserId(email);
+            tokenService.validarToken(authHeader);
 
+            User user = service.getUserId(email);
             if (user == null) {
                 return ResponseEntity.notFound().build();
             }
-            
+
             Optional<Credits> credits = service.getUserCredits(user.getId());
             if (credits.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
             
-            Credits c = credits.get();
-            return ResponseEntity.ok(c);
-            
+            return ResponseEntity.ok(credits.get());
+
         } catch (Exception e) {
-            // En caso de error en el procesamiento
+            e.printStackTrace();
             return ResponseEntity.status(500).body(null);
         }
     }
+
 
 
     @PostMapping("/addcredits/{userid}")

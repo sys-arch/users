@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import edu.uclm.esi.users.model.Credits;
 
 public interface CreditsDAO extends JpaRepository<Credits, Long> {
-    public Optional<Credits> findByUserId(String userId);  
-    
+    public Optional<Credits> findByUserId(String userId);
+    public boolean existsByUserId(String userId);
 }
