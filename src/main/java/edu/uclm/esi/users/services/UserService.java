@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import edu.uclm.esi.users.dao.UserDao;
-import edu.uclm.esi.users.model.User;
 import edu.uclm.esi.users.dao.CreditsDAO;
+import edu.uclm.esi.users.dao.UserDao;
 import edu.uclm.esi.users.model.Credits;
+import edu.uclm.esi.users.model.User;
 
 
 @Service
@@ -88,6 +88,18 @@ public class UserService {
 	    // Actualizar la contraseña y guardar el usuario
 	    usuario.setPwd(hashedPassword); // Asumiendo que `setPwd` actualiza la contraseña
 	    userdao.save(usuario);
+	}
+
+	//Sanitizacion de strings
+	public String sanitize(String input) {
+	    if (input == null) {
+	        return null;
+	    }
+	    return input.replace("&", "&amp;")
+	                .replace("<", "&lt;")
+	                .replace(">", "&gt;")
+	                .replace("\"", "&quot;")
+	                .replace("'", "&#x27;");
 	}
 	
 }

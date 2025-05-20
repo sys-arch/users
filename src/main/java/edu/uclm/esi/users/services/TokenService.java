@@ -21,6 +21,8 @@ public class TokenService {
 
     // Valida el JWT usando JwtTokenProvider
     public String validarToken(String authHeader) {
+        System.out.println("Authorization header recibido: " + authHeader);
+
         String token = extractToken(authHeader);
         
         if (token == null || token.isEmpty()) {

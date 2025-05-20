@@ -55,9 +55,6 @@ public class CreditsController {
         }
     }
 
-
-
-
     @PostMapping("/addcreditsbyemail/{email}")
     public ResponseEntity<Credits> addCreditsByEmail(@RequestHeader(name = "Authorization") String authHeader,
                                                     @PathVariable String email,
