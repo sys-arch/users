@@ -21,24 +21,27 @@ public class CreditService {
     private UserDao userDAO;
 
     public Optional<Credits> getUserCredits(String userId) {
+        
         return cdao.findByUserId(userId);
     }
     
     public User getUserId(String email) {
+        System.out.println(email);
     	return userDAO.findByEmail(email);
+        
     }
 
     @Transactional
-    public Credits addCredits(String email, int amount) {
-        String userId = userDAO.findByEmail(email).getId();
+    public Credits addCredits(String userId, int amount) {
         if (userId == null) {
-            throw new IllegalArgumentException("User not found");
+            throw new IllegalArgumentException("User ID no puede ser null");
         }
-        Credits c = cdao.findByUserId(userId)
-                .orElse(new Credits(userId, 0));
+
+        Credits c = cdao.findByUserId(userId).orElse(new Credits(userId, 0));
         c.addCredits(amount);
         return cdao.save(c);
     }
+
 
     @Transactional
     public boolean deductCredits(String userId, int amount) {

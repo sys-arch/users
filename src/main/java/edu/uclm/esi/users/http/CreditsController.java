@@ -20,7 +20,7 @@ import edu.uclm.esi.users.services.TokenService;
 
 @RestController
 @RequestMapping("/credits")
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class CreditsController {
 
     @Autowired
@@ -33,7 +33,7 @@ public class CreditsController {
     public ResponseEntity<Credits> getUserCredits(
             @PathVariable String email,
             @RequestHeader("Authorization") String authHeader) {
-    	System.out.println("Holaaaa" + email);
+    	System.out.println("Obteniendo creditos de " + email);
         try {
             tokenService.validarToken(authHeader);
 
@@ -54,8 +54,6 @@ public class CreditsController {
             return ResponseEntity.status(500).body(null);
         }
     }
-
-
 
     @PostMapping("/addcreditsbyemail/{email}")
     public ResponseEntity<Credits> addCreditsByEmail(@RequestHeader(name = "Authorization") String authHeader,
