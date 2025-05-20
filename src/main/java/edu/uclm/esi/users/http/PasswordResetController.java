@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,14 @@ import edu.uclm.esi.users.services.EmailService;
 import edu.uclm.esi.users.services.PasswordResetService;
 import edu.uclm.esi.users.services.PasswordService;
 
+@CrossOrigin(
+    originPatterns = {
+        "http://localhost:*",
+        "http://*.swey.net",
+        "https://*.swey.net"
+    },
+    allowCredentials = "true"
+)
 @RestController
 @RequestMapping("/pwd")
 public class PasswordResetController {

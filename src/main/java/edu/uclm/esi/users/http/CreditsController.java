@@ -20,7 +20,14 @@ import edu.uclm.esi.users.services.TokenService;
 
 @RestController
 @RequestMapping("/credits")
-@CrossOrigin(origins = "http://localhost:8003", allowCredentials = "true")
+@CrossOrigin(
+    originPatterns = {
+        "http://localhost:*",
+        "http://*.swey.net",
+        "https://*.swey.net"
+    },
+    allowCredentials = "true"
+)
 public class CreditsController {
 
     @Autowired
