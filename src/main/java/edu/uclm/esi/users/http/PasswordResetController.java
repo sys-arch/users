@@ -18,14 +18,7 @@ import edu.uclm.esi.users.services.EmailService;
 import edu.uclm.esi.users.services.PasswordResetService;
 import edu.uclm.esi.users.services.PasswordService;
 
-@CrossOrigin(
-    originPatterns = {
-        "http://localhost:*",
-        "http://*.swey.net",
-        "https://*.swey.net"
-    },
-    allowCredentials = "true"
-)
+@CrossOrigin(origins = "*", allowCredentials = "true")
 @RestController
 @RequestMapping("/pwd")
 public class PasswordResetController {

@@ -27,14 +27,7 @@ import edu.uclm.esi.users.services.UserService;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(
-    originPatterns = {
-        "http://localhost:*",
-        "http://*.swey.net",
-        "https://*.swey.net"
-    },
-    allowCredentials = "true"
-)
+@CrossOrigin(origins = "*", allowCredentials = "true")
 
 public class UsersController {
 

@@ -12,14 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import edu.uclm.esi.users.services.TokenService;
 
 @RestController
-@CrossOrigin(
-    originPatterns = {
-        "http://localhost:*",
-        "http://*.swey.net",
-        "https://*.swey.net"
-    },
-    allowCredentials = "true"
-)
+@CrossOrigin(origins = "*", allowCredentials = "true")
 @RequestMapping("/tokens")
 public class TokenController {
 
