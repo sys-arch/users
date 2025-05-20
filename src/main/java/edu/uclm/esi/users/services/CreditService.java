@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.uclm.esi.users.dao.CreditsDAO;
+import edu.uclm.esi.users.dao.UserDao;
 import edu.uclm.esi.users.model.Credits;
-import edu.uclm.esi.users.model.User;
-import edu.uclm.esi.users.dao.UserDao; 
+import edu.uclm.esi.users.model.User; 
 
 @Service
 public class CreditService {
@@ -29,7 +29,11 @@ public class CreditService {
     }
 
     @Transactional
-    public Credits addCredits(String userId, int amount) {
+    public Credits addCredits(String email, int amount) {
+        String userId = userDAO.findByEmail(email).getId();
+        if (userId == null) {
+            throw new IllegalArgumentException("User not found");
+        }
         Credits c = cdao.findByUserId(userId)
                 .orElse(new Credits(userId, 0));
         c.addCredits(amount);
