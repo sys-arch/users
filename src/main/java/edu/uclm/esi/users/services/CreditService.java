@@ -26,6 +26,7 @@ public class CreditService {
     
     public User getUserId(String email) {
     	return userDAO.findByEmail(email);
+        
     }
 
     @Transactional
