@@ -33,7 +33,7 @@ public class CreditsController {
     public ResponseEntity<Credits> getUserCredits(
             @PathVariable String email,
             @RequestHeader("Authorization") String authHeader) {
-    	System.out.println("Holaaaa" + email);
+    	System.out.println("Obteniendo creditos de " + email);
         try {
             tokenService.validarToken(authHeader);
 
